@@ -1,2 +1,4 @@
 ---
-# vars file for stuart.gocarbon
+go_carbon_distro_el: "{{ ansible_distribution in ['RedHat', 'CentOS'] }}"
+go_carbon_distro_debian: "{{ ansible_distribution in ['Debian', 'Ubuntu'] }}"
+go_carbon_package_base_url: "https://github.com/lomik/go-carbon/releases/download/v{{ go_carbon_version }}"

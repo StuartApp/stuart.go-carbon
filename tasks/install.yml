@@ -1,0 +1,10 @@
+---
+- name: "Install go-carbon deb package on Debian/Ubuntu"
+  apt:
+    deb: "{{ go_carbon_package_base_url }}/go-carbon_{{ go_carbon_version }}_amd64.deb"
+  when: go_carbon_distro_debian
+
+- name: "Install go-carbon rpm package on EL/CentOS"
+  yum:
+    name: "{{ go_carbon_package_base_url }}/go-carbon-{{ go_carbon_version }}-1.x86_64.rpm"
+  when: go_carbon_distro_el
