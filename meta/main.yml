@@ -1,6 +1,7 @@
 galaxy_info:
+  role_name: stuart.go-carbon
   author: Davide Ferrari
-  description: your description
+  description: Ansible role to install and configure go-carbon 
   company: Stuart
   license: GPLv3
   min_ansible_version: 2.5
@@ -12,10 +13,10 @@ galaxy_info:
       - stretch
   - name: Ubuntu
     versions:
-      - 16.04
-      - 18.04
-  - name: CentOS
-    version:
+      - xenial
+      - bionic
+  - name: EL
+    versions:
       - 7
 
   galaxy_tags:
