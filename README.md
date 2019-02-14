@@ -1,38 +1,99 @@
-Role Name
+Ansible Role for go-carbon
 =========
 
-A brief description of the role goes here.
+This role will install and configure [go-carbon](https://github.com/lomik/go-carbon), a _Golang implementation of Graphite/Carbon server_
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role will only take care of the **carbon** component installation. You have to take care of disabling the original Carbon program in a default Graphite installation.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The whole go-carbon configuration is automatically generated based on the values of three dicts:
+
+```yaml
+go_carbon_conf:
+  common:
+    user: "carbon"
+    max-cpu: 4
+  whisper:
+    data-dir: "/var/lib/graphite/whisper"
+go_carbon_storage_schemas:
+  default:
+    pattern: ".*"
+    retentions: "60s:30d,1h:5y"
+go_carbon_storage_aggregation_rules:
+  default:
+    pattern: ".*"
+    xFilesFactor: 0.5
+    aggregationMethod: "average"
+```
+
+The first level will create a `[section]` in the corresponding file and all the other key/values will create a key/value entry in that section.
+
+There's only one notable exception in `go_carbon_conf`, which is `logging`. Since go-carbon supports multiple loggers, you can define multiple entries like this:
+
+```yaml
+go_carbon_conf:
+  logging:
+    - logger: ""
+      file: "/var/log/go-carbon/go-carbon.log"
+      level: "info"
+      encoding: "mixed"
+      encoding-time: "iso8601"
+      encoding-duration: "seconds"
+      ## you can add more loggers here, they will appear as [[logging]] sections
+      # - logger: ""
+      #   file: "stderr"
+      #   level: "error"
+```
+
+**Please note**: the default values are in `vars/main.yml` under `go_carbon_conf_defaults` but you must override them using the `go_carbon_conf` dict.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+There are no extra dependencies
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This will install go-carbon and customize its configuration, creating the necessary directories
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+- hosts: servers
+  roles:
+- { role: stuart.go-carbon,
+    vars: {
+      go_carbon_conf:
+        common:
+          user: "graphite"
+          max-cpu: 2
+        whisper:
+          data-dir: "/var/local/whisper"
+        cache:
+          max-size: 2500000
+      go_carbon_storage_schemas:
+        default:
+          pattern: ".*"
+          retentions: "60s:30d,1h:5y"
+      go_carbon_storage_aggregation_rules:
+        default:
+          pattern: ".*"
+          xFilesFactor: 0.5
+          aggregationMethod: "average"
+    }
+  }
+```
 
 License
 -------
 
-BSD
+GPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was originally created by [Davide Ferrari](https://github.com/vide) while working for [Stuart](https://stuart.com/). If you like what we do, give me a shout! [We are hiring!](https://stuart.com/jobs/)
