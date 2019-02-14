@@ -1,5 +1,5 @@
 
-{% if go_carbon_conf is defined and go_carbon_conf.items()|length > 0 %}
+{% if (go_carbon_conf is defined) and (go_carbon_conf.items()|length > 0) %}
 {% for group_name, options in go_carbon_conf.items() %}
 {% if group_name == "logging" %}
 {% for logger in options %}
@@ -16,7 +16,7 @@
 [{{ group_name }}]
 {% for name, value in options.items() %}
 {% if value is not string %}
-{{ name }} = {{ value|lower}}
+{{ name }} = {{ value|lower }}
 {% else %}
 {{ name }} = "{{ value }}"
 {% endif %}

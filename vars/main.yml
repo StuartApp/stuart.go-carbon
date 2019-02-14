@@ -7,6 +7,7 @@ go_carbon_svc_state: "started"
 go_carbon_conf_defaults:
   common:
     user: "carbon"
+    group: "carbon"
     graph-prefix: "carbon.agents.{host}"
     metric-endpoint: "local"
     metric-interval: "1m0s"

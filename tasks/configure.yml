@@ -2,6 +2,33 @@
 - name: Combine go-carbon config with defaults
   set_fact: go_carbon_conf="{{ go_carbon_conf_defaults | combine(go_carbon_conf,recursive=True)}}"
 
+- name: Create storage directory
+  file:
+    path: "{{ go_carbon_conf.whisper['data-dir'] }}"
+    state: directory
+    owner: "{{ go_carbon_conf.common.user }}"
+    group: "{{ go_carbon_conf.common.group }}"
+    mode: 0775
+    recurse: yes
+  
+- name: Create tags directory
+  file:
+    path: "{{ go_carbon_conf.tags['local-dir'] }}"
+    state: directory
+    owner: "{{ go_carbon_conf.common.user }}"
+    group: "{{ go_carbon_conf.common.group }}"
+    mode: 0775
+    recurse: yes
+
+- name: Create dump directory
+  file:
+    path: "{{ go_carbon_conf.dump.path }}"
+    state: directory
+    owner: "{{ go_carbon_conf.common.user }}"
+    group: "{{ go_carbon_conf.common.group }}"
+    mode: 0775
+    recurse: yes
+
 - name: Copy go-carbon.conf
   template:
     src: go-carbon.conf.j2
