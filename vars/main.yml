@@ -2,3 +2,89 @@
 go_carbon_distro_el: "{{ ansible_distribution in ['RedHat', 'CentOS'] }}"
 go_carbon_distro_debian: "{{ ansible_distribution in ['Debian', 'Ubuntu'] }}"
 go_carbon_package_base_url: "https://github.com/lomik/go-carbon/releases/download/v{{ go_carbon_version }}"
+go_carbon_config_file: "/etc/go-carbon/go-carbon.conf"
+go_carbon_svc_state: "started"
+go_carbon_conf_defaults:
+  common:
+    user: "carbon"
+    graph-prefix: "carbon.agents.{host}"
+    metric-endpoint: "local"
+    metric-interval: "1m0s"
+    max-cpu: 4
+  whisper:
+    data-dir: "/var/lib/graphite/whisper"
+    schemas-file: "/etc/go-carbon/storage-schemas.conf"
+    aggregation-file: "/etc/go-carbon/storage-aggregation.conf"
+    workers: 8
+    max-updates-per-second: 0
+    max-creates-per-second: 0
+    sparse-create: false
+    flock: false
+    enabled: true
+    hash-filenames: true
+  cache:
+    max-size: 1000000
+    write-strategy: "max"
+  udp:
+    listen: ":2003"
+    enabled: true
+    log-incomplete: false
+    buffer-size: 0
+  tcp:
+    listen: ":2003"
+    enabled: true
+    buffer-size: 0
+  pickle:
+    listen: ":2004"
+    max-message-size: 67108864
+    enabled: true
+    buffer-size: 0
+  carbonlink:
+    listen: "127.0.0.1:7002"
+    enabled: true
+    read-timeout: "30s"
+  grpc:
+    listen: "127.0.0.1:7003"
+    enabled: true
+  tags:
+    enabled: false
+    tagdb-url: "http://127.0.0.1:8000"
+    tagdb-chunk-size: 32
+    local-dir: "/var/lib/graphite/tagging/"
+    tagdb-timeout: "1s"
+  carbonserver:
+    listen: "127.0.0.1:8080"
+    enabled: false
+    buckets: 10
+    metrics-as-counters: false
+    read-timeout: "60s"
+    write-timeout: "60s"
+    query-cache-enabled: true
+    query-cache-size-mb: 0
+    find-cache-enabled: true
+    trigram-index: true
+    scan-frequency: "5m0s"
+    max-globs: 100
+    fail-on-max-globs: false
+    graphite-web-10-strict-mode: true
+    internal-stats-dir: ""
+    stats-percentiles: [99, 98, 95, 75, 50]
+  dump:
+    enabled: false
+    path: "/var/lib/graphite/dump/"
+    restore-per-second: 0
+  pprof:
+    listen: "localhost:7007"
+    enabled: false
+  logging:
+    - logger: ""
+      file: "/var/log/go-carbon/go-carbon.log"
+      level: "info"
+      encoding: "mixed"
+      encoding-time: "iso8601"
+      encoding-duration: "seconds"
+      ## you can add more loggers here, they will appear as [[logging]] sections
+      # - logger: ""
+      #   file: "stderr"
+      #   level: "error"
+

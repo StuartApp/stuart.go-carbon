@@ -1,2 +1,18 @@
 ---
 go_carbon_version: "0.13.0"
+# overwrite this hash to add your own configurations. Defaults can be found in `vars/main.yml`
+go_carbon_conf:
+  common:
+    user: "carbon"
+    max-cpu: 4
+  whisper:
+    data-dir: "/var/lib/graphite/whisper"
+go_carbon_storage_schemas:
+  default:
+    pattern: ".*"
+    retentions: "60s:30d,1h:5y"
+go_carbon_storage_aggregation_rules:
+  default:
+    pattern: ".*"
+    xFilesFactor: 0.5
+    aggregationMethod: "average"

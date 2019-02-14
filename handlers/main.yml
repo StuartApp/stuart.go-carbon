@@ -1,2 +1,6 @@
 ---
-# handlers file for stuart.gocarbon
+- name: restart go-carbon service
+  systemd:
+    name: go-carbon
+    state: restarted
+  when: go_carbon_svc_state != 'stopped'
