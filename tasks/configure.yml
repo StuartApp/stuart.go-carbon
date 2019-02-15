@@ -10,7 +10,7 @@
     group: "{{ go_carbon_conf.common.group }}"
     mode: 0775
     recurse: yes
-  
+
 - name: Create tags directory
   file:
     path: "{{ go_carbon_conf.tags['local-dir'] }}"
@@ -27,7 +27,6 @@
     owner: "{{ go_carbon_conf.common.user }}"
     group: "{{ go_carbon_conf.common.group }}"
     mode: 0775
-    recurse: yes
 
 - name: Copy go-carbon.conf
   template:
