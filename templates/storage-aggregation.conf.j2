@@ -17,7 +17,7 @@
 
 # Documentation:
 # http://graphite.readthedocs.io/en/latest/config-carbon.html#storage-aggregation-conf
-{% for rule_name, options in go_carbon_storage_aggregation_rules.items() %}
+{% for rule_name, options in go_carbon_storage_aggregation_rules.items()|sort %}
 
 [{{ rule_name }}]
 {% for name, value in options.items() %}

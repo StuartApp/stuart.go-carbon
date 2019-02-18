@@ -7,7 +7,7 @@
 #  [name]
 #  pattern = regex
 #  retentions = timePerPoint:timeToStore, timePerPoint:timeToStore, ...
-{% for schema_name, options in go_carbon_storage_schemas.items() %}
+{% for schema_name, options in go_carbon_storage_schemas.items()|sort %}
 
 [{{ schema_name }}]
 {% for name, value in options.items() %}
